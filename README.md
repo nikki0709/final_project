@@ -41,7 +41,7 @@ npm install
 
 3. Start the development server:
 ```bash
-npm run dev
+npm start
 ```
 
 4. Open your browser and navigate to `http://localhost:5173`
@@ -79,10 +79,6 @@ src/
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Acknowledgments
 
