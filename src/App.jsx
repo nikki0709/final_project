@@ -1,35 +1,69 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import styled from '@emotion/styled';
+import { useState } from 'react';
+
+// Components
+import Canvas from './components/Canvas';
+import ShapeLibrary from './components/ShapeLibrary';
+import Header from './components/Header';
+import About from './components/About';
+
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+`;
+
+const MainContent = styled.main`
+  display: flex;
+  flex: 1;
+  padding: 20px;
+  gap: 20px;
+`;
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [currentPage, setCurrentPage] = useState('test'); // 'test' or 'about'
+  const [testData, setTestData] = useState({
+    house: [],
+    tree: [],
+    person: []
+  });
+
+  const handleTestComplete = async () => {
+    // TODO: Implement GenAI analysis
+    console.log('Test completed:', testData);
+  };
+
+  const handleShapeAdd = (shape) => {
+    setTestData(prev => ({
+      ...prev,
+      [shape.type]: [...(prev[shape.type] || []), shape]
+    }));
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <DndProvider backend={HTML5Backend}>
+      <AppContainer>
+        <Header currentPage={currentPage} onPageChange={setCurrentPage} />
+        <MainContent>
+          {currentPage === 'test' ? (
+            <>
+              <ShapeLibrary onShapeAdd={handleShapeAdd} />
+              <Canvas 
+                testData={testData}
+                setTestData={setTestData}
+                onTestComplete={handleTestComplete}
+              />
+            </>
+          ) : (
+            <About />
+          )}
+        </MainContent>
+      </AppContainer>
+    </DndProvider>
+  );
 }
 
-export default App
+export default App;
