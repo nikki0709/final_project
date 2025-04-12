@@ -4,19 +4,17 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  assetsInclude: ['**/*.PNG', '**/*.png'],
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.PNG', '.png']
+    alias: {
+      '@': '/src'
+    }
   },
+  assetsInclude: ['**/*.PNG', '**/*.png'],
   build: {
+    assetsInlineLimit: 0,
     rollupOptions: {
       output: {
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name.endsWith('.PNG') || assetInfo.name.endsWith('.png')) {
-            return 'assets/[name][extname]';
-          }
-          return 'assets/[name]-[hash][extname]';
-        }
+        assetFileNames: 'assets/[name][extname]'
       }
     }
   }

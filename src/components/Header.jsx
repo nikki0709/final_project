@@ -25,37 +25,29 @@ const NavLinks = styled.div`
   gap: 1rem;
 `;
 
-const NavLink = styled.button`
-  background: none;
+const Button = styled.button`
+  padding: 8px 16px;
+  background-color: transparent;
   border: none;
-  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  color: #007bff;
   cursor: pointer;
-  color: ${props => props.active ? '#007bff' : '#666'};
-  font-weight: ${props => props.active ? 'bold' : 'normal'};
+  font-size: 14px;
   
   &:hover {
-    color: #007bff;
+    background-color: #f8f9fa;
   }
 `;
 
-function Header({ currentPage, onPageChange }) {
+function Header({ onAboutClick }) {
   return (
     <HeaderContainer>
       <Nav>
         <Title>House-Tree-Person Test</Title>
         <NavLinks>
-          <NavLink 
-            active={currentPage === 'test'}
-            onClick={() => onPageChange('test')}
-          >
-            Take Test
-          </NavLink>
-          <NavLink 
-            active={currentPage === 'about'}
-            onClick={() => onPageChange('about')}
-          >
+          <Button onClick={onAboutClick}>
             About
-          </NavLink>
+          </Button>
         </NavLinks>
       </Nav>
     </HeaderContainer>

@@ -1,68 +1,92 @@
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import { useState } from 'react';
-
-// Components
+import Header from './components/Header';
 import Canvas from './components/Canvas';
 import ShapeLibrary from './components/ShapeLibrary';
-import Header from './components/Header';
 import About from './components/About';
 
 const AppContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #f5f5f5;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 `;
 
-const MainContent = styled.main`
+const MainContent = styled.div`
   display: flex;
-  flex: 1;
-  padding: 20px;
   gap: 20px;
+  margin-top: 20px;
 `;
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('test'); // 'test' or 'about'
-  const [testData, setTestData] = useState({
-    house: [],
-    tree: [],
-    person: []
-  });
-
-  const handleTestComplete = async () => {
-    // TODO: Implement GenAI analysis
-    console.log('Test completed:', testData);
-  };
+  const [shapes, setShapes] = useState([]);
+  const [showAbout, setShowAbout] = useState(false);
 
   const handleShapeAdd = (shape) => {
-    setTestData(prev => ({
-      ...prev,
-      [shape.type]: [...(prev[shape.type] || []), shape]
-    }));
+    // Remove any existing shape of the same type/category
+    const existingShapeIndex = shapes.findIndex(s => s.type === shape.type);
+    
+    if (existingShapeIndex !== -1) {
+      // Replace the existing shape with the new one
+      const newShapes = [...shapes];
+      newShapes[existingShapeIndex] = {
+        ...shape,
+        id: `${shape.type}-${Date.now()}`, // Ensure unique ID
+      };
+      setShapes(newShapes);
+    } else {
+      // Add new shape if none exists of this type
+      const newShape = {
+        ...shape,
+        id: `${shape.type}-${Date.now()}`, // Ensure unique ID
+      };
+      setShapes([...shapes, newShape]);
+    }
+  };
+
+  const handleShapeMove = (shapeId, newPosition) => {
+    setShapes(shapes.map(shape => 
+      shape.id === shapeId 
+        ? { ...shape, position: newPosition }
+        : shape
+    ));
+  };
+
+  const handleShapeResize = (shapeId, updates) => {
+    setShapes(shapes.map(shape =>
+      shape.id === shapeId
+        ? {
+            ...shape,
+            width: updates.width,
+            height: updates.height,
+            position: updates.position
+          }
+        : shape
+    ));
+  };
+
+  const handleShapeDelete = (shapeId) => {
+    const shapeToDelete = shapes.find(s => s.id === shapeId);
+    if (shapeToDelete) {
+      setShapes(shapes.filter(shape => shape.id !== shapeId));
+    }
   };
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <AppContainer>
-        <Header currentPage={currentPage} onPageChange={setCurrentPage} />
-        <MainContent>
-          {currentPage === 'test' ? (
-            <>
-              <ShapeLibrary onShapeAdd={handleShapeAdd} />
-              <Canvas 
-                testData={testData}
-                setTestData={setTestData}
-                onTestComplete={handleTestComplete}
-              />
-            </>
-          ) : (
-            <About />
-          )}
-        </MainContent>
-      </AppContainer>
-    </DndProvider>
+    <AppContainer>
+      <Header onAboutClick={() => setShowAbout(true)} />
+      <MainContent>
+        <ShapeLibrary onShapeAdd={handleShapeAdd} />
+        <Canvas 
+          shapes={shapes}
+          onShapeMove={handleShapeMove}
+          onShapeResize={handleShapeResize}
+          onShapeDelete={handleShapeDelete}
+        />
+      </MainContent>
+      {showAbout && (
+        <About onClose={() => setShowAbout(false)} />
+      )}
+    </AppContainer>
   );
 }
 

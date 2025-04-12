@@ -40,20 +40,20 @@ const ShapesGrid = styled.div`
 const ShapeItem = styled.div`
   width: 100px;
   height: 100px;
-  border: 2px solid #ccc;
+  border: 2px solid ${props => props.isSelected ? '#007bff' : '#ccc'};
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: move;
-  background-color: ${props => props.isDragging ? '#e3f2fd' : 'white'};
+  cursor: pointer;
+  background-color: ${props => props.isSelected ? '#e3f2fd' : 'white'};
   padding: 10px;
-  opacity: ${props => props.isDragging ? 0.5 : 1};
   
   &:hover {
     border-color: #007bff;
     transform: scale(1.05);
     transition: all 0.2s ease;
+    background-color: ${props => props.isSelected ? '#e3f2fd' : '#f8f9fa'};
   }
 
   img {
@@ -69,26 +69,28 @@ const Arrow = styled.span`
   transition: transform 0.3s ease;
 `;
 
-function DraggableShape({ shape }) {
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: 'SHAPE',
-    item: { ...shape },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging()
-    })
-  }));
+function ClickableShape({ shape, isSelected, onClick }) {
+  const handleImageError = (e) => {
+    console.error(`Error loading image for ${shape.type}:`, e);
+    console.log('Image source:', shape.image);
+  };
 
   return (
     <ShapeItem
-      ref={drag}
-      isDragging={isDragging}
+      onClick={onClick}
+      isSelected={isSelected}
     >
-      <img src={shape.image} alt={shape.type} />
+      <img
+        src={shape.image}
+        alt={shape.type}
+        onError={handleImageError}
+        style={{ maxWidth: '100%', maxHeight: '100%' }}
+      />
     </ShapeItem>
   );
 }
 
-function ShapeCategory({ item, isExpanded, onToggle }) {
+function ShapeCategory({ item, isExpanded, onToggle, selectedShape, onShapeSelect }) {
   return (
     <CategoryContainer>
       <CategoryHeader onClick={onToggle}>
@@ -97,9 +99,11 @@ function ShapeCategory({ item, isExpanded, onToggle }) {
       </CategoryHeader>
       <ShapesGrid isExpanded={isExpanded}>
         {item.shapes.map((shape) => (
-          <DraggableShape
+          <ClickableShape
             key={shape.id}
             shape={shape}
+            isSelected={selectedShape?.id === shape.id}
+            onClick={() => onShapeSelect(shape)}
           />
         ))}
       </ShapesGrid>

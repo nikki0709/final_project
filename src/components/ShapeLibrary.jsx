@@ -3,52 +3,52 @@ import { useState } from 'react';
 import ShapeCategory from './ShapeCategory';
 
 // Import roof images
-const roof1 = new URL('../assets/shapes/roof1.PNG', import.meta.url).href;
-const roof2 = new URL('../assets/shapes/roof2.PNG', import.meta.url).href;
-const roof3 = new URL('../assets/shapes/roof3.PNG', import.meta.url).href;
-const roof4 = new URL('../assets/shapes/roof4.PNG', import.meta.url).href;
+import roof1 from '../assets/shapes/roof1.PNG';
+import roof2 from '../assets/shapes/roof2.PNG';
+import roof3 from '../assets/shapes/roof3.PNG';
+import roof4 from '../assets/shapes/roof4.PNG';
 
 // Import wall images
-const wall1 = new URL('../assets/shapes/wall1.PNG', import.meta.url).href;
-const wall2 = new URL('../assets/shapes/wall2.PNG', import.meta.url).href;
-const wall3 = new URL('../assets/shapes/wall3.PNG', import.meta.url).href;
-const wall4 = new URL('../assets/shapes/wall4.PNG', import.meta.url).href;
+import wall1 from '../assets/shapes/wall1.PNG';
+import wall2 from '../assets/shapes/wall2.PNG';
+import wall3 from '../assets/shapes/wall3.PNG';
+import wall4 from '../assets/shapes/wall4.PNG';
 
 // Import door images
-const door1 = new URL('../assets/shapes/door1.PNG', import.meta.url).href;
-const door2 = new URL('../assets/shapes/door2.PNG', import.meta.url).href;
-const door3 = new URL('../assets/shapes/door3.PNG', import.meta.url).href;
-const door4 = new URL('../assets/shapes/door4.PNG', import.meta.url).href;
+import door1 from '../assets/shapes/door1.PNG';
+import door2 from '../assets/shapes/door2.PNG';
+import door3 from '../assets/shapes/door3.PNG';
+import door4 from '../assets/shapes/door4.PNG';
 
 // Import window images
-const window1 = new URL('../assets/shapes/window1.PNG', import.meta.url).href;
-const window2 = new URL('../assets/shapes/window2.PNG', import.meta.url).href;
-const window3 = new URL('../assets/shapes/window3.PNG', import.meta.url).href;
-const window4 = new URL('../assets/shapes/window4.PNG', import.meta.url).href;
+import window1 from '../assets/shapes/window1.PNG';
+import window2 from '../assets/shapes/window2.PNG';
+import window3 from '../assets/shapes/window3.PNG';
+import window4 from '../assets/shapes/window4.PNG';
 
 // Import trunk images
-const trunk1 = new URL('../assets/shapes/trunk1.PNG', import.meta.url).href;
-const trunk2 = new URL('../assets/shapes/trunk2.PNG', import.meta.url).href;
-const trunk3 = new URL('../assets/shapes/trunk3.PNG', import.meta.url).href;
-const trunk4 = new URL('../assets/shapes/trunk4.PNG', import.meta.url).href;
+import trunk1 from '../assets/shapes/trunk1.PNG';
+import trunk2 from '../assets/shapes/trunk2.PNG';
+import trunk3 from '../assets/shapes/trunk3.PNG';
+import trunk4 from '../assets/shapes/trunk4.PNG';
 
 // Import crown images
-const crown1 = new URL('../assets/shapes/crown1.PNG', import.meta.url).href;
-const crown2 = new URL('../assets/shapes/crown2.PNG', import.meta.url).href;
-const crown3 = new URL('../assets/shapes/crown3.PNG', import.meta.url).href;
-const crown4 = new URL('../assets/shapes/crown4.PNG', import.meta.url).href;
+import crown1 from '../assets/shapes/crown1.PNG';
+import crown2 from '../assets/shapes/crown2.PNG';
+import crown3 from '../assets/shapes/crown3.PNG';
+import crown4 from '../assets/shapes/crown4.PNG';
 
 // Import male images
-const male1 = new URL('../assets/shapes/male1.PNG', import.meta.url).href;
-const male2 = new URL('../assets/shapes/male2.PNG', import.meta.url).href;
-const male3 = new URL('../assets/shapes/male3.PNG', import.meta.url).href;
-const male4 = new URL('../assets/shapes/male4.PNG', import.meta.url).href;
+import male1 from '../assets/shapes/male1.PNG';
+import male2 from '../assets/shapes/male2.PNG';
+import male3 from '../assets/shapes/male3.PNG';
+import male4 from '../assets/shapes/male4.PNG';
 
 // Import female images
-const female1 = new URL('../assets/shapes/female1.PNG', import.meta.url).href;
-const female2 = new URL('../assets/shapes/female2.PNG', import.meta.url).href;
-const female3 = new URL('../assets/shapes/female3.PNG', import.meta.url).href;
-const female4 = new URL('../assets/shapes/female4.PNG', import.meta.url).href;
+import female1 from '../assets/shapes/female1.PNG';
+import female2 from '../assets/shapes/female2.PNG';
+import female3 from '../assets/shapes/female3.PNG';
+import female4 from '../assets/shapes/female4.PNG';
 
 const LibraryContainer = styled.div`
   width: 300px;
@@ -142,17 +142,44 @@ const categories = {
   ],
 };
 
-function ShapeLibrary() {
+function ShapeLibrary({ onShapeAdd }) {
   const [activeCategory, setActiveCategory] = useState('house');
   const [expandedItem, setExpandedItem] = useState(null);
+  const [selectedShapes, setSelectedShapes] = useState({});
 
   const handleCategoryClick = (category) => {
     setActiveCategory(category);
-    setExpandedItem(null);
   };
 
   const handleItemClick = (itemId) => {
     setExpandedItem(expandedItem === itemId ? null : itemId);
+  };
+
+  const handleShapeSelect = (categoryId, shape) => {
+    // Check if this shape is already selected
+    const isCurrentlySelected = selectedShapes[categoryId]?.id === shape.id;
+
+    if (isCurrentlySelected) {
+      // If clicking the same shape again, deselect it
+      const newSelectedShapes = { ...selectedShapes };
+      delete newSelectedShapes[categoryId];
+      setSelectedShapes(newSelectedShapes);
+    } else {
+      // If selecting a new shape, update the selection and add to canvas
+      const newSelectedShapes = {
+        ...selectedShapes,
+        [categoryId]: shape
+      };
+      setSelectedShapes(newSelectedShapes);
+
+      // Add the shape to the canvas at a default position
+      const defaultPosition = {
+        x: Math.random() * 400 + 100, // Random position between 100 and 500
+        y: Math.random() * 200 + 50,  // Random position between 50 and 250
+      };
+
+      onShapeAdd({ ...shape, position: defaultPosition });
+    }
   };
 
   return (
@@ -175,6 +202,8 @@ function ShapeLibrary() {
           item={item}
           isExpanded={expandedItem === item.id}
           onToggle={() => handleItemClick(item.id)}
+          selectedShape={selectedShapes[item.id]}
+          onShapeSelect={(shape) => handleShapeSelect(item.id, shape)}
         />
       ))}
     </LibraryContainer>
