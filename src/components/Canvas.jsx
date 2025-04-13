@@ -1,16 +1,21 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useDrop } from 'react-dnd';
 import html2canvas from 'html2canvas';
 
+// Fixed dimensions for the canvas
+const CANVAS_WIDTH = 800;
+const CANVAS_HEIGHT = 600;
+
 const CanvasContainer = styled.div`
-  width: 800px;
-  height: 600px;
+  width: ${CANVAS_WIDTH}px;
+  height: ${CANVAS_HEIGHT}px;
   border: 2px dashed #ccc;
   border-radius: 8px;
   position: relative;
   background-color: white;
   overflow: hidden;
+  flex-shrink: 0; /* Prevent flexbox from shrinking the canvas */
 `;
 
 const Shape = styled.div`
@@ -116,6 +121,7 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
   const [startSize, setStartSize] = useState({ width: 0, height: 0 });
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
   const canvasRef = useRef(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'SHAPE',
@@ -226,12 +232,39 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
 
   const handleSave = async () => {
     if (canvasRef.current) {
-      const canvas = await html2canvas(canvasRef.current);
-      const image = canvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.href = image;
-      link.download = 'htp-test.png';
-      link.click();
+      setIsExporting(true);
+      
+      try {
+        // Get the device pixel ratio to account for high DPI displays
+        const pixelRatio = window.devicePixelRatio || 1;
+        
+        // Create a clone of the canvas element to avoid any potential issues with the original
+        const canvasElement = canvasRef.current;
+        
+        // Use html2canvas with specific options to ensure correct scaling
+        const canvas = await html2canvas(canvasElement, {
+          width: CANVAS_WIDTH,
+          height: CANVAS_HEIGHT,
+          scale: pixelRatio, // Use device pixel ratio for high DPI displays
+          useCORS: true, // Enable CORS for images
+          backgroundColor: '#ffffff', // Ensure white background
+          logging: false, // Disable logging
+          allowTaint: true, // Allow tainted canvas
+          foreignObjectRendering: false, // Disable foreignObject rendering
+          removeContainer: true, // Remove temporary container after rendering
+        });
+        
+        // Create a download link with the correct dimensions
+        const image = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = image;
+        link.download = 'htp-test.png';
+        link.click();
+      } catch (error) {
+        console.error('Error saving canvas:', error);
+      } finally {
+        setIsExporting(false);
+      }
     }
   };
 
@@ -245,6 +278,7 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
+      style={{ width: `${CANVAS_WIDTH}px`, height: `${CANVAS_HEIGHT}px` }}
     >
       {shapes.map((shape) => (
         <Shape
@@ -254,10 +288,23 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
             height: shape.height + 'px',
             left: shape.position.x + 'px',
             top: shape.position.y + 'px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
           onMouseDown={(e) => handleMouseDown(e, shape)}
         >
-          <img src={shape.image} alt={shape.type} />
+          <img 
+            src={shape.image} 
+            alt={shape.type} 
+            style={{
+              maxWidth: '100%',
+              maxHeight: '100%',
+              objectFit: 'contain',
+              width: 'auto',
+              height: 'auto',
+            }}
+          />
           <ShapeControls className="shape-controls">
             <DeleteButton onClick={() => onShapeDelete(shape.id)}>
               Delete
@@ -270,7 +317,9 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
         </Shape>
       ))}
       <Controls>
-        <Button onClick={handleSave}>Save as Image</Button>
+        <Button onClick={handleSave} disabled={isExporting}>
+          {isExporting ? 'Saving...' : 'Save as Image'}
+        </Button>
         <Button 
           onClick={handleComplete}
           disabled={shapes.length === 0}

@@ -2,8 +2,9 @@ import styled from '@emotion/styled';
 
 const HeaderContainer = styled.header`
   background-color: #ffffff;
-  padding: 1rem 2rem;
+  padding: 1rem 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
 `;
 
 const Nav = styled.nav`
@@ -12,6 +13,7 @@ const Nav = styled.nav`
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
 `;
 
 const Title = styled.h1`
@@ -43,7 +45,7 @@ function Header({ onAboutClick }) {
   return (
     <HeaderContainer>
       <Nav>
-        <Title>House-Tree-Person Test</Title>
+        <Title>House🏡-Tree🌳-Person🚶 Test</Title>
         <NavLinks>
           <Button onClick={onAboutClick}>
             About
