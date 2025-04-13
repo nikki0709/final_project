@@ -58,22 +58,18 @@ npm start
 
 ```
 src/
-├── assets/                     # Static assets
-│   ├── icon/                  # App icons or logos
-│   └── shapes/                # Shape images and SVGs
-│       └── react.svg
-├── components/                # React components
-│   ├── About.jsx              # About page component
-│   ├── Canvas.jsx             # Drawing canvas component
-│   ├── Header.jsx             # Navigation header
-│   ├── ShapeCategory.jsx      # Shape category dropdowns
-│   ├── ShapeLibrary.jsx       # Draggable shapes library
-│   ├── SmallScreenMessage.jsx # Message for small screen users
-│   └── TestImage.jsx          # Image test component (if used)
-├── App.css                    # Global CSS
-├── App.jsx                    # Main application component
-├── index.css                  # Global styles
-└── main.jsx                   # Application entry point
+  ├── components/         # React components
+  │   ├── About.jsx      # About page component
+  │   ├── Canvas.jsx     # Drawing canvas component
+  │   ├── Header.jsx     # Navigation header
+  │   └── ShapeLibrary.jsx # Draggable shapes library
+  ├── assets/            # Static assets
+  │   └── shapes/        # Shape images and SVGs
+  ├── hooks/             # Custom React hooks
+  ├── utils/             # Utility functions
+  ├── context/           # React context
+  ├── App.jsx            # Main application component
+  └── main.jsx           # Application entry point
 ```
 
 ## Contributing

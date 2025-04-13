@@ -85,7 +85,7 @@ function App() {
       
       // If there's already a person figure from a different category
       if (currentPersonCategory && currentPersonCategory !== newCategory) {
-        setPopupMessage("Only one category is allowed at a time. Please delete the current person to switch categories.");
+        setPopupMessage("You can only add one person at a time. To switch between male and female figures, please delete the current person from the canvas first.");
         setShowPopup(true);
         return;
       }
