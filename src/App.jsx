@@ -82,7 +82,7 @@ function App() {
     // Handle person figures specially
     if (shape.type === 'male' || shape.type === 'female') {
       const newCategory = shape.type === 'male' ? 'male' : 'female';
-      
+
       // If there's already a person figure from a different category
       if (currentPersonCategory && currentPersonCategory !== newCategory) {
         setPopupMessage("You can only add one person at a time. To switch between male and female figures, please delete the current person from the canvas first.");
@@ -95,7 +95,7 @@ function App() {
 
       // Remove any existing person figure
       const newShapes = shapes.filter(s => s.type !== 'male' && s.type !== 'female');
-      
+
       // Add the new person figure
       const newShape = {
         ...shape,
@@ -107,7 +107,7 @@ function App() {
 
     // Handle non-person shapes as before
     const existingShapeIndex = shapes.findIndex(s => s.type === shape.type);
-    
+
     if (existingShapeIndex !== -1) {
       const newShapes = [...shapes];
       newShapes[existingShapeIndex] = {
@@ -125,8 +125,8 @@ function App() {
   };
 
   const handleShapeMove = (shapeId, newPosition) => {
-    setShapes(shapes.map(shape => 
-      shape.id === shapeId 
+    setShapes(shapes.map(shape =>
+      shape.id === shapeId
         ? { ...shape, position: newPosition }
         : shape
     ));
@@ -136,11 +136,11 @@ function App() {
     setShapes(shapes.map(shape =>
       shape.id === shapeId
         ? {
-            ...shape,
-            width: updates.width,
-            height: updates.height,
-            position: updates.position
-          }
+          ...shape,
+          width: updates.width,
+          height: updates.height,
+          position: updates.position
+        }
         : shape
     ));
   };
@@ -166,7 +166,7 @@ function App() {
       <AppContainer>
         <MainContent>
           <ShapeLibrary onShapeAdd={handleShapeAdd} />
-          <Canvas 
+          <Canvas
             shapes={shapes}
             onShapeMove={handleShapeMove}
             onShapeResize={handleShapeResize}

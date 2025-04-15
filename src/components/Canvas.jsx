@@ -3,10 +3,11 @@ import styled from '@emotion/styled';
 import { useDrop } from 'react-dnd';
 import html2canvas from 'html2canvas';
 
-// Fixed dimensions for the canvas
+// Dimensions for the canvas
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
 
+// Styled components for canvas layout and interaction
 const CanvasContainer = styled.div`
   width: ${CANVAS_WIDTH}px;
   height: ${CANVAS_HEIGHT}px;
@@ -18,12 +19,14 @@ const CanvasContainer = styled.div`
   flex-shrink: 0; /* Prevent flexbox from shrinking the canvas */
 `;
 
+// Styled component for draggable shapes
 const Shape = styled.div`
   position: absolute;
   cursor: move;
   user-select: none;
   transition: transform 0.1s ease;
   
+  /* Show controls on hover */
   &:hover {
     z-index: 1000;
     
@@ -115,6 +118,7 @@ const Button = styled.button`
 `;
 
 function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMove, onShapeResize, onShapeDelete }) {
+  // State management for drag and resize operations
   const [draggingShape, setDraggingShape] = useState(null);
   const [resizingShape, setResizingShape] = useState(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -123,12 +127,15 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
   const canvasRef = useRef(null);
   const [isExporting, setIsExporting] = useState(false);
 
+  // Configure drop target using react-dnd
   const [{ isOver }, drop] = useDrop(() => ({
-    accept: 'SHAPE',
+    accept: 'SHAPE', // Accept shapes as droppable items
     drop: (item, monitor) => {
+      // Calculate drop position relative to canvas
       const offset = monitor.getClientOffset();
       const canvasRect = canvasRef.current.getBoundingClientRect();
-      
+
+      // Create new shape with calculated position
       const newShape = {
         ...item,
         id: `${item.type}-${Date.now()}`,
@@ -137,7 +144,7 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
           y: offset.y - canvasRect.top - (item.height / 2)
         }
       };
-      
+
       setTestData(prev => ({
         ...prev,
         [item.type]: [...(prev[item.type] || []), newShape]
@@ -148,13 +155,16 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
     })
   }), []);
 
+  // Handle mouse down for dragging and resizing
   const handleMouseDown = (e, shape) => {
     if (e.target.classList.contains('resize-handle')) {
+      // Initialize resize operation
       const handle = e.target.dataset.handle;
       setResizingShape({ shape, handle });
       setStartSize({ width: shape.width, height: shape.height });
       setStartPos({ x: shape.position.x, y: shape.position.y });
     } else {
+      // Initialize drag operation
       const shapeElement = e.currentTarget;
       const rect = shapeElement.getBoundingClientRect();
       setOffset({
@@ -165,19 +175,23 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
     }
   };
 
+  // Handle mouse movement for both dragging and resizing
   const handleMouseMove = (e) => {
     const canvasRect = canvasRef.current.getBoundingClientRect();
 
+    // Handle shape dragging
     if (draggingShape) {
       const x = e.clientX - canvasRect.left - offset.x;
       const y = e.clientY - canvasRect.top - offset.y;
 
+      // Keep shape within canvas bounds
       const boundedX = Math.max(0, Math.min(x, canvasRect.width - draggingShape.width));
       const boundedY = Math.max(0, Math.min(y, canvasRect.height - draggingShape.height));
 
       onShapeMove(draggingShape.id, { x: boundedX, y: boundedY });
     }
 
+    // Handle shape resizing
     if (resizingShape) {
       const { shape, handle } = resizingShape;
       const dx = e.clientX - canvasRect.left - (startPos.x + startSize.width);
@@ -188,9 +202,10 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
       let newX = startPos.x;
       let newY = startPos.y;
 
-      // Maintain aspect ratio
+      // Maintain aspect ratio during resize
       const aspectRatio = startSize.width / startSize.height;
 
+      // Calculate new dimensions based on resize handle
       if (handle.includes('right')) {
         newWidth = Math.max(30, startSize.width + dx);
         newHeight = newWidth / aspectRatio;
@@ -211,12 +226,13 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
         newY = startPos.y + (startSize.height - newHeight);
       }
 
-      // Ensure the shape stays within canvas bounds
+      // Ensure shape stays within canvas bounds
       if (newX < 0) newX = 0;
       if (newY < 0) newY = 0;
       if (newX + newWidth > canvasRect.width) newWidth = canvasRect.width - newX;
       if (newY + newHeight > canvasRect.height) newHeight = canvasRect.height - newY;
 
+      // Update shape with new dimensions and position
       onShapeResize(shape.id, {
         width: Math.round(newWidth),
         height: Math.round(newHeight),
@@ -225,23 +241,23 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
     }
   };
 
+  // Reset drag and resize states on mouse up
   const handleMouseUp = () => {
     setDraggingShape(null);
     setResizingShape(null);
   };
 
+  // Handle saving canvas as image
   const handleSave = async () => {
     if (canvasRef.current) {
       setIsExporting(true);
-      
+
       try {
-        // Get the device pixel ratio to account for high DPI displays
+        // Get the device pixel ratio for high DPI displays
         const pixelRatio = window.devicePixelRatio || 1;
-        
-        // Create a clone of the canvas element to avoid any potential issues with the original
         const canvasElement = canvasRef.current;
-        
-        // Use html2canvas with specific options to ensure correct scaling
+
+        // Use html2canvas with specific options for quality export
         const canvas = await html2canvas(canvasElement, {
           width: CANVAS_WIDTH,
           height: CANVAS_HEIGHT,
@@ -253,8 +269,8 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
           foreignObjectRendering: false, // Disable foreignObject rendering
           removeContainer: true, // Remove temporary container after rendering
         });
-        
-        // Create a download link with the correct dimensions
+
+        // Create and trigger download
         const image = canvas.toDataURL('image/png');
         const link = document.createElement('a');
         link.href = image;
@@ -294,9 +310,9 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
           }}
           onMouseDown={(e) => handleMouseDown(e, shape)}
         >
-          <img 
-            src={shape.image} 
-            alt={shape.type} 
+          <img
+            src={shape.image}
+            alt={shape.type}
             style={{
               maxWidth: '100%',
               maxHeight: '100%',
@@ -320,7 +336,7 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
         <Button onClick={handleSave} disabled={isExporting}>
           {isExporting ? 'Saving...' : 'Save as Image'}
         </Button>
-        <Button 
+        <Button
           onClick={handleComplete}
           disabled={shapes.length === 0}
         >
@@ -331,4 +347,4 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
   );
 }
 
-export default Canvas; 
+export default Canvas;
