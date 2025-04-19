@@ -76,16 +76,24 @@ npm start
 
 ```
 src/
-├── components/
-│   ├── About.jsx
-│   ├── Canvas.jsx
-│   ├── Header.jsx
-│   ├── ShapeLibrary.jsx
-│   └── SmallScreenMessage.jsx
-├── services/
-│   └── interpretationService.js
-├── App.jsx
-└── main.jsx
+├── assets/                     # Static assets
+│   ├── icon/                  # App icons or logos
+│   └── shapes/                # Shape images and SVGs
+│       └── react.svg
+├── components/                # React components
+│   ├── About.jsx              # About page component
+│   ├── Canvas.jsx             # Drawing canvas component
+│   ├── Header.jsx             # Navigation header
+│   ├── ShapeCategory.jsx      # Shape category dropdowns
+│   ├── ShapeLibrary.jsx       # Draggable shapes library
+│   ├── SmallScreenMessage.jsx # Message for small screen
+│   └── TestImage.jsx          # Image test component (if used)
+├── services/                  # Service modules
+│   └── interpretationService.js # Rule-based interpretation logic
+├── App.css                    # Global CSS
+├── App.jsx                    # Main application component
+├── index.css                  # Global styles
+└── main.jsx                   # Application entry point
 ```
 
 ## Interpretation System
@@ -97,13 +105,6 @@ The application uses a rule-based interpretation system that analyzes:
 - **Size**: Relative size of elements
 - **Relationships**: Proximity and arrangement of elements
 
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ## License
 
