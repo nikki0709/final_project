@@ -87,7 +87,7 @@ src/
 │   ├── ShapeCategory.jsx      # Shape category dropdowns
 │   ├── ShapeLibrary.jsx       # Draggable shapes library
 │   ├── SmallScreenMessage.jsx # Message for small screen
-│   └── TestImage.jsx          # Image test component (if used)
+│   └── TestImage.jsx          # Image test component
 ├── services/                  # Service modules
 │   └── interpretationService.js # Rule-based interpretation logic
 ├── App.css                    # Global CSS
