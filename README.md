@@ -1,24 +1,26 @@
-# House-Tree-Person (HTP) Test Web Application
+# Interactive House-Tree-Person (HTP) Test
 
-An interactive web application that allows users to take the House-Tree-Person Test using a drag-and-drop interface. Users can assemble a house, tree, and person from pre-designed shapes and elements, and receive an AI-generated psychological interpretation of their arrangement.
+An interactive web application that allows users to take the House-Tree-Person psychological test using a modern, drag-and-drop interface. The application provides instant interpretations based on the user's drawings and element placements.
 
 ## Features
 
-- Drag-and-drop interface for creating house, tree, and person drawings
-- Pre-designed shapes and elements for customization
-- AI-powered psychological interpretation
-- Save and share functionality
-- Responsive design for both desktop and mobile devices
-- Educational about section explaining the HTP test
+- **Interactive Drawing Interface**
+  - Drag-and-drop functionality for placing elements
+  - Pre-designed components for house, tree, and person
+  - Resizable and repositionable elements
+  - Responsive canvas that adapts to screen size
 
-## Technologies Used
+- **Position-Based Analysis**
+  - Analyzes element placement (left, right, top, bottom, center)
+  - Interprets relationships between elements
+  - Considers size and proximity of components
+  - Provides instant feedback on psychological interpretations
 
-- React.js
-- TypeScript
-- React DnD for drag-and-drop functionality
-- Emotion for styled components
-- HTML2Canvas for image export
-- Vite for build tooling
+- **User Experience**
+  - Responsive design that works on larger screens
+  - Clear instructions and guidance
+  - About section with detailed test information
+  - Save functionality for completed drawings
 
 ## Getting Started
 
@@ -46,35 +48,54 @@ npm start
 
 4. Open your browser and navigate to `http://localhost:5173`
 
-## Usage
+## How to Use
 
-1. Click on "Take Test" to start the HTP test
-2. Drag and drop shapes from the shape library to create your house, tree, and person
-3. Arrange the elements as desired
-4. Click "Complete Test" to receive your AI-generated interpretation
-5. Save your drawing as an image or share it with others
+1. **Start the Test**
+   - Read the instructions carefully
+
+2. **Create Your Drawing**
+   - Select elements from the shape library
+   - Drag and drop elements onto the canvas
+   - Resize and reposition as needed
+   - Place at least one element from each category (House, Tree, Person)
+
+3. **Complete the Test**
+   - Click "Complete Test" when finished
+   - View your interpretation results
+   - Option to save your drawing
+
+## Technical Stack
+
+- **Frontend Framework**: React
+- **Build Tool**: Vite
+- **Styling**: Emotion (CSS-in-JS)
+- **Drag and Drop**: react-dnd
+- **Image Processing**: html2canvas
 
 ## Project Structure
 
 ```
 src/
-├── assets/                     # Static assets
-│   ├── icon/                  # App icons or logos
-│   └── shapes/                # Shape images and SVGs
-│       └── react.svg
-├── components/                # React components
-│   ├── About.jsx              # About page component
-│   ├── Canvas.jsx             # Drawing canvas component
-│   ├── Header.jsx             # Navigation header
-│   ├── ShapeCategory.jsx      # Shape category dropdowns
-│   ├── ShapeLibrary.jsx       # Draggable shapes library
-│   ├── SmallScreenMessage.jsx # Message for small screen users
-│   └── TestImage.jsx          # Image test component (if used)
-├── App.css                    # Global CSS
-├── App.jsx                    # Main application component
-├── index.css                  # Global styles
-└── main.jsx                   # Application entry point
+├── components/
+│   ├── About.jsx
+│   ├── Canvas.jsx
+│   ├── Header.jsx
+│   ├── ShapeLibrary.jsx
+│   └── SmallScreenMessage.jsx
+├── services/
+│   └── interpretationService.js
+├── App.jsx
+└── main.jsx
 ```
+
+## Interpretation System
+
+The application uses a rule-based interpretation system that analyzes:
+
+- **Element Selection**: Choice of specific house, tree, and person components
+- **Positioning**: Placement on the canvas (left, right, top, bottom, center)
+- **Size**: Relative size of elements
+- **Relationships**: Proximity and arrangement of elements
 
 ## Contributing
 
@@ -84,8 +105,16 @@ src/
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
 ## Acknowledgments
 
-- John Buck for developing the original HTP test
-- The React.js community for their excellent documentation and tools
-- Contributors and maintainers of all the open-source libraries used in this project
+- Based on the House-Tree-Person test developed by John Buck in 1948
+- Built with modern web technologies for educational purposes
+- Designed for self-reflection and personal insight
+
+## Disclaimer
+
+This is an educational and self-reflection tool. The interpretations provided are based on general psychological principles but should not be considered as professional psychological evaluation. If you have concerns about your mental health, please consult with a qualified mental health professional.

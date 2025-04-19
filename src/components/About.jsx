@@ -106,47 +106,51 @@ function About({ onClose }) {
         </Section>
 
         <Section>
-          <SectionTitle>How It Works</SectionTitle>
+          <SectionTitle>How Our Interactive Version Works</SectionTitle>
           <Paragraph>
-            In this interactive version of the test, you'll be able to create your drawings using a click-to-add 
-            interface. You can assemble houses, trees, and people using various pre-designed elements, allowing you 
-            to express yourself through your choices and arrangements.
+            In this interactive version, you'll create your drawing using pre-designed elements. The system analyzes:
           </Paragraph>
+          <List>
+            <li><strong>Element Selection:</strong> Your choice of specific house, tree, and person components</li>
+            <li><strong>Positioning:</strong> Where you place each element on the canvas (left, right, top, bottom, or center)</li>
+            <li><strong>Size:</strong> How large or small you make each element</li>
+            <li><strong>Relationships:</strong> How close or far apart you place the elements from each other</li>
+          </List>
         </Section>
 
         <Section>
-          <SectionTitle>What Each Element Represents</SectionTitle>
+          <SectionTitle>Understanding the Analysis</SectionTitle>
           <Paragraph>
-            <strong>House:</strong> Represents self-image and family relationships. The way you construct your house 
-            can reveal insights about your home life and sense of security.
+            The interpretation considers several factors:
           </Paragraph>
-          <Paragraph>
-            <strong>Tree:</strong> Symbolizes growth, strength, and life experiences. The characteristics of your tree 
-            can reflect your personal development and resilience.
-          </Paragraph>
-          <Paragraph>
-            <strong>Person:</strong> Represents your self-image and how you relate to others. The details and 
-            positioning of the person can reveal aspects of your personality and social interactions.
-          </Paragraph>
+          <List>
+            <li><strong>Left Placement:</strong> May indicate connection to past experiences and memories</li>
+            <li><strong>Right Placement:</strong> Often suggests future orientation and goals</li>
+            <li><strong>Top Placement:</strong> Can represent aspirations and idealism</li>
+            <li><strong>Bottom Placement:</strong> Might indicate groundedness and stability</li>
+            <li><strong>Central Placement:</strong> Often suggests current focus and balance</li>
+            <li><strong>Element Proximity:</strong> Reveals relationships between different aspects of life</li>
+          </List>
         </Section>
 
         <Section>
           <SectionTitle>Using This Tool</SectionTitle>
           <Paragraph>
-            This interactive version of the HTP test allows you to:
+            To get the most meaningful interpretation:
           </Paragraph>
           <List>
-            <li>Select shapes from different categories (House, Tree, Person)</li>
-            <li>Click to add elements to your drawing</li>
-            <li>Resize and reposition elements as needed</li>
-            <li>Save your completed test as an image</li>
+            <li>Take your time selecting and placing each element</li>
+            <li>Consider the size and position of each component</li>
+            <li>Think about how the elements relate to each other</li>
+            <li>Complete all three aspects: house, tree, and person</li>
           </List>
         </Section>
 
         <Disclaimer>
-          <strong>Important Disclaimer:</strong> This is not a professional psychological evaluation. 
-          The interpretations provided are for entertainment and self-reflection purposes only. If you 
-          have concerns about your mental health, please consult with a qualified mental health professional.
+          <strong>Important Note:</strong> This is an educational and self-reflection tool. 
+          The interpretations provided are based on general psychological principles but should not 
+          be considered as professional psychological evaluation. If you have concerns about your 
+          mental health, please consult with a qualified mental health professional.
         </Disclaimer>
       </AboutContainer>
     </Overlay>
