@@ -86,7 +86,7 @@ src/
 │   ├── Header.jsx             # Navigation header
 │   ├── ShapeCategory.jsx      # Shape category dropdowns
 │   ├── ShapeLibrary.jsx       # Draggable shapes library
-│   ├── SmallScreenMessage.jsx # Message for small screen
+│   └── SmallScreenMessage.jsx # Message for small screen
 ├── services/                  # Service modules
 │   └── interpretationService.js # Rule-based interpretation logic
 ├── App.css                    # Global CSS
