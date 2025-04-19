@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from '@emotion/styled';
 import { useDrop } from 'react-dnd';
 import html2canvas from 'html2canvas';
+import { analyzeDrawing } from '../services/interpretationService';
 
 // Dimensions for the canvas
 const CANVAS_WIDTH = 800;
@@ -117,8 +118,35 @@ const Button = styled.button`
   }
 `;
 
-function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMove, onShapeResize, onShapeDelete }) {
-  // State management for drag and resize operations
+const ValidationPopup = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  text-align: center;
+  max-width: 400px;
+`;
+
+const PopupButton = styled.button`
+  margin-top: 15px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+function Canvas({ testData, setTestData, shapes = [], onShapeMove, onShapeResize, onShapeDelete, onAnalysisComplete }) {
   const [draggingShape, setDraggingShape] = useState(null);
   const [resizingShape, setResizingShape] = useState(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -126,6 +154,7 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
   const canvasRef = useRef(null);
   const [isExporting, setIsExporting] = useState(false);
+  const [showValidationPopup, setShowValidationPopup] = useState(false);
 
   // Configure drop target using react-dnd
   const [{ isOver }, drop] = useDrop(() => ({
@@ -284,8 +313,40 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
     }
   };
 
+  // Function to check if all required categories are present
+  const checkRequiredCategories = () => {
+    const categories = {
+      house: false,
+      tree: false,
+      person: false
+    };
+
+    shapes.forEach(shape => {
+      // Check house category (includes roof, wall, door, window)
+      if (['roof', 'wall', 'door', 'window'].includes(shape.type)) {
+        categories.house = true;
+      }
+      // Check tree category (includes trunk, crown)
+      if (['trunk', 'crown'].includes(shape.type)) {
+        categories.tree = true;
+      }
+      // Check person category (includes male, female)
+      if (['male', 'female'].includes(shape.type)) {
+        categories.person = true;
+      }
+    });
+
+    return categories.house && categories.tree && categories.person;
+  };
+
   const handleComplete = () => {
-    onTestComplete();
+    if (checkRequiredCategories()) {
+      // Generate interpretation based on current shapes
+      const interpretation = analyzeDrawing(shapes);
+      onAnalysisComplete(interpretation);
+    } else {
+      setShowValidationPopup(true);
+    }
   };
 
   return (
@@ -340,9 +401,15 @@ function Canvas({ testData, setTestData, onTestComplete, shapes = [], onShapeMov
           onClick={handleComplete}
           disabled={shapes.length === 0}
         >
-          Complete Test
+          {shapes.length === 0 ? 'Drawing Empty' : 'Complete Test'}
         </Button>
       </Controls>
+      {showValidationPopup && (
+        <ValidationPopup>
+          <p>Please complete your drawing by selecting one shape from each of the House, Tree, and Person sections before continuing.</p>
+          <PopupButton onClick={() => setShowValidationPopup(false)}>OK</PopupButton>
+        </ValidationPopup>
+      )}
     </CanvasContainer>
   );
 }

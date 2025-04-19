@@ -106,30 +106,48 @@ function About({ onClose }) {
         </Section>
 
         <Section>
-          <SectionTitle>How Our Interactive Version Works</SectionTitle>
+          <SectionTitle>How Our Analysis Works</SectionTitle>
           <Paragraph>
-            In this interactive version, you'll create your drawing using pre-designed elements. The system analyzes:
+            Our interactive version analyzes your drawing based on several key factors:
           </Paragraph>
           <List>
-            <li><strong>Element Selection:</strong> Your choice of specific house, tree, and person components</li>
-            <li><strong>Positioning:</strong> Where you place each element on the canvas (left, right, top, bottom, or center)</li>
-            <li><strong>Size:</strong> How large or small you make each element</li>
-            <li><strong>Relationships:</strong> How close or far apart you place the elements from each other</li>
+            <li><strong>Element Placement:</strong> The position of each element (left, right, top, bottom, or center) 
+            provides insights about time orientation, aspirations, and stability.</li>
+            <li><strong>Size and Proportions:</strong> The size of elements can indicate their relative importance 
+            and your relationship with different aspects of life.</li>
+            <li><strong>Relative Positions:</strong> The proximity between elements reveals relationships between 
+            different aspects of your personality and life experiences.</li>
+            <li><strong>Element Choices:</strong> Your selection of specific shapes and figures reflects personal 
+            preferences and perspectives.</li>
           </List>
         </Section>
 
         <Section>
-          <SectionTitle>Understanding the Analysis</SectionTitle>
+          <SectionTitle>Understanding the Elements</SectionTitle>
           <Paragraph>
-            The interpretation considers several factors:
+            <strong>House:</strong> Represents your self-image and family relationships. Elements like doors and 
+            windows reflect your openness to connections and experiences, while the roof and walls symbolize 
+            protection and boundaries.
           </Paragraph>
+          <Paragraph>
+            <strong>Tree:</strong> Symbolizes growth, strength, and life experiences. The trunk represents your 
+            core stability, while the crown reflects your aspirations and personal growth.
+          </Paragraph>
+          <Paragraph>
+            <strong>Person:</strong> Represents your self-image and how you relate to others. The placement and 
+            type of figure can reveal aspects of your personality and social interactions.
+          </Paragraph>
+        </Section>
+
+        <Section>
+          <SectionTitle>Interpretation Guidelines</SectionTitle>
           <List>
-            <li><strong>Left Placement:</strong> May indicate connection to past experiences and memories</li>
-            <li><strong>Right Placement:</strong> Often suggests future orientation and goals</li>
-            <li><strong>Top Placement:</strong> Can represent aspirations and idealism</li>
-            <li><strong>Bottom Placement:</strong> Might indicate groundedness and stability</li>
-            <li><strong>Central Placement:</strong> Often suggests current focus and balance</li>
-            <li><strong>Element Proximity:</strong> Reveals relationships between different aspects of life</li>
+            <li><strong>Left Placement:</strong> Often associated with the past and established patterns</li>
+            <li><strong>Right Placement:</strong> Typically indicates future orientation and goals</li>
+            <li><strong>Top Placement:</strong> May suggest aspirations and idealism</li>
+            <li><strong>Bottom Placement:</strong> Often represents groundedness and stability</li>
+            <li><strong>Central Placement:</strong> Usually indicates present focus and balance</li>
+            <li><strong>Proximity:</strong> Close placement of elements suggests strong connections between different aspects of life</li>
           </List>
         </Section>
 
@@ -139,18 +157,18 @@ function About({ onClose }) {
             To get the most meaningful interpretation:
           </Paragraph>
           <List>
-            <li>Take your time selecting and placing each element</li>
-            <li>Consider the size and position of each component</li>
-            <li>Think about how the elements relate to each other</li>
-            <li>Complete all three aspects: house, tree, and person</li>
+            <li>Take your time to consider the placement of each element</li>
+            <li>Trust your intuitive choices about size and position</li>
+            <li>Complete all three elements (house, tree, and person)</li>
+            <li>Consider how the elements relate to each other in your composition</li>
           </List>
         </Section>
 
         <Disclaimer>
-          <strong>Important Note:</strong> This is an educational and self-reflection tool. 
-          The interpretations provided are based on general psychological principles but should not 
-          be considered as professional psychological evaluation. If you have concerns about your 
-          mental health, please consult with a qualified mental health professional.
+          <strong>Important Note:</strong> This is an educational and self-reflection tool. The interpretations 
+          provided are based on general psychological principles but should not be considered as professional 
+          psychological evaluation. If you have concerns about your mental health, please consult with a qualified 
+          mental health professional.
         </Disclaimer>
       </AboutContainer>
     </Overlay>
