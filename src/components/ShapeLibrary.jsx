@@ -50,6 +50,8 @@ import female2 from '../assets/shapes/female2.PNG';
 import female3 from '../assets/shapes/female3.PNG';
 import female4 from '../assets/shapes/female4.PNG';
 
+// Styled component for the main library container
+// Provides a fixed-width sidebar with scrolling for overflow content
 const LibraryContainer = styled.div`
   width: 300px;
   background-color: white;
@@ -63,6 +65,8 @@ const LibraryContainer = styled.div`
   overflow-y: auto;
 `;
 
+// Styled component for the category tabs container
+// Arranges category tabs in a row with a bottom border
 const CategoryTabs = styled.div`
   display: flex;
   gap: 5px;
@@ -71,6 +75,8 @@ const CategoryTabs = styled.div`
   margin-bottom: 10px;
 `;
 
+// Styled component for individual category tabs
+// Changes appearance based on active state
 const CategoryTab = styled.button`
   padding: 8px 16px;
   border: none;
@@ -85,6 +91,8 @@ const CategoryTab = styled.button`
   }
 `;
 
+// Data structure defining all available shapes organized by category
+// Each category contains subcategories with their respective shapes
 const categories = {
   house: [
     { id: 'roof', title: 'Roof', shapes: [
@@ -142,19 +150,35 @@ const categories = {
   ],
 };
 
+// Main component for the shape library
+// Manages the display and selection of shapes for the HTP test
+// Props:
+// - onShapeAdd: Function to handle adding a shape to the canvas
 function ShapeLibrary({ onShapeAdd }) {
+  // State for tracking the active category (house, tree, person)
   const [activeCategory, setActiveCategory] = useState('house');
+  // State for tracking which subcategory is expanded
   const [expandedItem, setExpandedItem] = useState(null);
+  // State for tracking selected shapes in each subcategory
   const [selectedShapes, setSelectedShapes] = useState({});
 
+  // Handler for category tab clicks
+  // Updates the active category when a tab is clicked
   const handleCategoryClick = (category) => {
     setActiveCategory(category);
   };
 
+  // Handler for subcategory header clicks
+  // Toggles the expanded state of a subcategory
   const handleItemClick = (itemId) => {
     setExpandedItem(expandedItem === itemId ? null : itemId);
   };
 
+  // Handler for shape selection
+  // Manages the selection state and adds shapes to the canvas
+  // Args:
+  // - categoryId: ID of the subcategory containing the shape
+  // - shape: The shape object being selected
   const handleShapeSelect = (categoryId, shape) => {
     // Check if this shape is already selected
     const isCurrentlySelected = selectedShapes[categoryId]?.id === shape.id;
@@ -184,6 +208,7 @@ function ShapeLibrary({ onShapeAdd }) {
 
   return (
     <LibraryContainer>
+      {/* Category tabs for switching between house, tree, and person categories */}
       <CategoryTabs>
         {Object.keys(categories).map((category) => (
           <CategoryTab
@@ -196,6 +221,7 @@ function ShapeLibrary({ onShapeAdd }) {
         ))}
       </CategoryTabs>
 
+      {/* Render shape categories for the active main category */}
       {categories[activeCategory].map((item) => (
         <ShapeCategory
           key={item.id}

@@ -1,12 +1,17 @@
 import styled from '@emotion/styled';
 import { useDrag } from 'react-dnd';
 
+// Styled component for the category container
+// Provides a bordered container with rounded corners for each shape category
 const CategoryContainer = styled.div`
   border: 1px solid #eee;
   border-radius: 4px;
   overflow: hidden;
 `;
 
+// Styled component for the category header button
+// Displays the category title and expand/collapse arrow
+// Changes background color on hover for better user interaction
 const CategoryHeader = styled.button`
   width: 100%;
   padding: 10px;
@@ -23,6 +28,9 @@ const CategoryHeader = styled.button`
   }
 `;
 
+// Styled component for the grid of shapes within a category
+// Uses CSS Grid to display shapes in a 2-column layout
+// Handles expand/collapse animation with opacity and max-height transitions
 const ShapesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -37,6 +45,9 @@ const ShapesGrid = styled.div`
   border-top: ${props => props.isExpanded ? '1px solid #eee' : 'none'};
 `;
 
+// Styled component for individual shape items
+// Displays a shape image with a border that changes color when selected
+// Includes hover effects for better user interaction
 const ShapeItem = styled.div`
   width: 100px;
   height: 100px;
@@ -64,12 +75,20 @@ const ShapeItem = styled.div`
   }
 `;
 
+// Styled component for the expand/collapse arrow
+// Rotates based on the expanded state of the category
 const Arrow = styled.span`
   transform: ${props => props.isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'};
   transition: transform 0.3s ease;
 `;
 
+// Component for rendering a clickable shape with error handling for image loading
+// Props:
+// - shape: The shape object containing image and type information
+// - isSelected: Boolean indicating if this shape is currently selected
+// - onClick: Function to handle shape selection
 function ClickableShape({ shape, isSelected, onClick }) {
+  // Error handler for image loading failures
   const handleImageError = (e) => {
     console.error(`Error loading image for ${shape.type}:`, e);
     console.log('Image source:', shape.image);
@@ -90,6 +109,13 @@ function ClickableShape({ shape, isSelected, onClick }) {
   );
 }
 
+// Main component for rendering a category of shapes with expand/collapse functionality
+// Props:
+// - item: Category data containing title and shapes array
+// - isExpanded: Boolean indicating if the category is expanded
+// - onToggle: Function to handle category expansion/collapse
+// - selectedShape: Currently selected shape object
+// - onShapeSelect: Function to handle shape selection
 function ShapeCategory({ item, isExpanded, onToggle, selectedShape, onShapeSelect }) {
   return (
     <CategoryContainer>
