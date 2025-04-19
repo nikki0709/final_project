@@ -105,11 +105,6 @@ The application uses a rule-based interpretation system that analyzes:
 - **Size**: Relative size of elements
 - **Relationships**: Proximity and arrangement of elements
 
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Acknowledgments
 
 - Based on the House-Tree-Person test developed by John Buck in 1948
