@@ -12,13 +12,15 @@ const HeaderContainer = styled.header`
 
 // Styled component for the navigation wrapper
 // Centers the content and sets maximum width for larger screens
+// Ensures alignment with main content below
 const Nav = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px;
+  max-width: 1160px; /* Matches the effective width of MainContent + padding */
   margin: 0 auto;
   padding: 0 20px;
+  box-sizing: border-box; /* Include padding in width calculation */
 `;
 
 // Styled component for the application title

@@ -19,6 +19,7 @@ const AppContainer = styled.div`
   padding: 20px;
   width: 100%;
   flex: 1;
+  box-sizing: border-box;
 `;
 
 const MainContent = styled.div`
@@ -26,6 +27,10 @@ const MainContent = styled.div`
   gap: 20px;
   margin-top: 20px;
   align-items: flex-start; /* Align items to the top */
+  width: 100%; /* Ensure the main content takes full width of container */
+  max-width: 1120px; /* Matches ShapeLibrary width (300px) + Canvas width (800px) + gap (20px) */
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 const InterpretationSection = styled.div`
@@ -34,6 +39,11 @@ const InterpretationSection = styled.div`
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Make it take full width of container */
+  max-width: 1120px; /* Matches ShapeLibrary width (300px) + Canvas width (800px) + gap (20px) */
+  box-sizing: border-box; /* Include padding in width calculation */
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 const InterpretationTitle = styled.h3`
