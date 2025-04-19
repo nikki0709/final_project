@@ -28,6 +28,60 @@ const MainContent = styled.div`
   align-items: flex-start; /* Align items to the top */
 `;
 
+const InterpretationSection = styled.div`
+  margin-top: 20px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const InterpretationTitle = styled.h3`
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const InterpretationText = styled.p`
+  color: #666;
+  line-height: 1.6;
+  font-size: 16px;
+  font-style: italic;
+`;
+
+const InterpretationContent = styled.div`
+  margin-top: 15px;
+`;
+
+const Section = styled.div`
+  margin-bottom: 20px;
+`;
+
+const SectionTitle = styled.h4`
+  color: #444;
+  margin-bottom: 8px;
+  font-size: 16px;
+`;
+
+const LoadingSpinner = styled.div`
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 10px;
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
+
 const Popup = styled.div`
   position: fixed;
   top: 50%;
@@ -62,6 +116,8 @@ function App() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [analysis, setAnalysis] = useState(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -156,6 +212,11 @@ function App() {
     }
   };
 
+  const handleTestComplete = async (analysisResult) => {
+    setAnalysis(analysisResult);
+    setIsAnalyzing(false);
+  };
+
   if (isSmallScreen) {
     return <SmallScreenMessage />;
   }
@@ -171,8 +232,41 @@ function App() {
             onShapeMove={handleShapeMove}
             onShapeResize={handleShapeResize}
             onShapeDelete={handleShapeDelete}
+            onAnalysisStart={() => setIsAnalyzing(true)}
+            onAnalysisComplete={handleTestComplete}
           />
         </MainContent>
+        <InterpretationSection>
+          <InterpretationTitle>
+            Interpretation
+            {isAnalyzing && <LoadingSpinner />}
+          </InterpretationTitle>
+          {!analysis && !isAnalyzing && (
+            <InterpretationText>
+              This section will provide insights based on your drawing.
+            </InterpretationText>
+          )}
+          {analysis && (
+            <InterpretationContent>
+              <Section>
+                <SectionTitle>House Analysis</SectionTitle>
+                <InterpretationText>{analysis.house}</InterpretationText>
+              </Section>
+              <Section>
+                <SectionTitle>Tree Analysis</SectionTitle>
+                <InterpretationText>{analysis.tree}</InterpretationText>
+              </Section>
+              <Section>
+                <SectionTitle>Person Analysis</SectionTitle>
+                <InterpretationText>{analysis.person}</InterpretationText>
+              </Section>
+              <Section>
+                <SectionTitle>Overall Interpretation</SectionTitle>
+                <InterpretationText>{analysis.overall}</InterpretationText>
+              </Section>
+            </InterpretationContent>
+          )}
+        </InterpretationSection>
         {showAbout && (
           <About onClose={() => setShowAbout(false)} />
         )}
